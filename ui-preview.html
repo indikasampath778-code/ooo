@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UI Preview | Anusha Jewellers</title>
+<!-- Static mock-up of the app screens with sample data. Not connected to the database. -->
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: { ink: "#0f172a", gold: "#d4af37", "gold-light": "#fcd34d", canvas: "#f8fafc", foreground: "#1e293b" },
+        fontSize: { xs: ["0.875rem", "1.25rem"] },
+      },
+    },
+  };
+</script>
+<style type="text/tailwindcss">
+  @layer components {
+    body { @apply bg-canvas text-foreground; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+    .card { @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm; }
+    .card-title { @apply mb-4 text-sm font-bold text-slate-800; }
+    .label { @apply mb-1 block text-[11px] font-semibold text-slate-600; }
+    .input { @apply w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-gold focus:bg-white focus:ring-2 focus:ring-amber-500/40; }
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold shadow-sm transition whitespace-nowrap; }
+    .btn-primary { @apply btn bg-slate-900 text-white hover:bg-slate-800; }
+    .btn-gold { @apply btn bg-gold text-slate-950 shadow hover:bg-amber-500; }
+    .btn-outline { @apply btn border border-slate-300 bg-slate-100 font-semibold text-slate-800 shadow-none hover:bg-slate-200; }
+    .btn-success { @apply btn bg-emerald-600 text-white hover:bg-emerald-700; }
+    .btn-danger { @apply btn bg-rose-600 text-white hover:bg-rose-700; }
+    .sm-btn { @apply px-3 py-1 text-xs; }
+    .table { @apply w-full text-left text-xs; }
+    .table thead { @apply bg-slate-50; }
+    .table th { @apply border-b border-slate-200 px-4 py-3 font-semibold whitespace-nowrap text-slate-600; }
+    .table td { @apply border-b border-slate-100 px-4 py-3 align-middle; }
+    .table tbody tr:hover { @apply bg-slate-50; }
+    .pill { @apply inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap ring-1; }
+    .pill-green { @apply pill bg-emerald-50 text-emerald-800 ring-emerald-200; }
+    .pill-gray { @apply pill bg-stone-100 text-stone-600 ring-stone-300; }
+    .pill-ink { @apply pill bg-ink/10 text-ink ring-ink/30; }
+    .pill-blue { @apply pill bg-blue-50 text-blue-800 ring-blue-200; }
+    .tab { @apply rounded-md px-4 py-2 text-sm font-medium text-ink hover:bg-canvas cursor-pointer; }
+    .tab.active { @apply bg-ink text-canvas shadow-sm; }
+    .nav-link { @apply rounded-lg px-3.5 py-2 text-xs font-semibold whitespace-nowrap text-slate-300 hover:bg-slate-800 cursor-pointer; }
+    .nav-link.active { @apply bg-gold text-slate-950 shadow; }
+    .dt { @apply text-xs font-medium tracking-wide text-foreground/50 uppercase; }
+    .dd { @apply mt-0.5 font-medium; }
+    dialog::backdrop { background: rgb(2 6 23 / 0.7); }
+  }
+</style>
+</head>
+<body class="min-h-screen">
+
+<div class="bg-amber-100 px-4 py-2 text-center text-xs font-semibold text-amber-900">
+  UI preview only: sample data, nothing is saved. Click the menu, rows and buttons to try each screen.
+</div>
+
+<!-- ============ Header ============ -->
+<header class="sticky top-0 z-40 border-b border-gold/40 bg-slate-900 text-white shadow-lg">
+  <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-3 sm:px-6 lg:px-8">
+    <div class="text-gold" style="font-family: Georgia, serif; font-style: italic; font-weight: 700; font-size: 1.4rem">Anusha Jewellers</div>
+    <div class="order-last flex w-full items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/90 px-3 py-2 lg:order-none lg:w-auto lg:flex-1 lg:max-w-xl">
+      <span class="flex items-center gap-1 border-r border-slate-700 pr-2 text-xs font-semibold whitespace-nowrap text-amber-400">
+        <span class="inline-block size-2 animate-pulse rounded-full bg-emerald-400"></span> 9 Nov 2026
+      </span>
+      <input class="w-full bg-transparent px-1 text-xs text-white outline-none placeholder:text-slate-500" placeholder="Scan barcode or search bill no, NIC, name, phone, locker…" />
+      <button class="rounded-lg bg-gold px-2.5 py-1 text-xs font-bold text-slate-950 shadow">Find</button>
+    </div>
+    <button class="rounded-lg border border-gold/50 bg-slate-800 px-3 py-1.5 text-xs font-semibold text-amber-300">⚡ Gold Rate · 22K Rs. 4,000/g</button>
+    <div class="flex items-center gap-3">
+      <div class="text-xs font-bold">Admin</div>
+      <button class="rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs text-slate-300">⏻ Log out</button>
+    </div>
+  </div>
+  <nav class="overflow-x-auto border-t border-slate-800 bg-slate-950">
+    <div id="nav" class="mx-auto flex max-w-7xl gap-1 px-4 py-2 sm:gap-2 sm:px-6 lg:px-8"></div>
+  </nav>
+</header>
+
+<main class="mx-auto w-full max-w-7xl p-4 sm:p-6 lg:p-8">
+
+<!-- ============ Dashboard ============ -->
+<section data-screen="dashboard" class="space-y-6">
+  <div>
+    <h2 class="mb-3 text-sm font-bold text-slate-800">Orders</h2>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" id="dash-orders"></div>
+  </div>
+  <div>
+    <h2 class="mb-3 text-sm font-bold text-slate-800">Pawning stock</h2>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" id="dash-pawns"></div>
+  </div>
+  <div>
+    <h2 class="mb-3 text-sm font-bold text-slate-800">Shop stock</h2>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" id="dash-stock"></div>
+  </div>
+</section>
+
+<!-- ============ Customer Orders ============ -->
+<section data-screen="orders" hidden>
+  <div class="mb-6 flex flex-col items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center">
+    <h1 class="text-xl font-bold text-slate-900">Customer Orders</h1>
+    <button class="btn-gold" onclick="openDialog('dlg-order')">+ New Order</button>
+  </div>
+  <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 p-4">
+      <input class="input max-w-md" placeholder="Search by bill no, customer name, phone or locker…" />
+      <div class="flex flex-wrap gap-1 rounded-lg bg-canvas p-1">
+        <span class="tab active">All</span><span class="tab">Pending</span><span class="tab">In progress</span><span class="tab">Completed</span><span class="tab">Delivered</span>
+      </div>
+    </div>
+    <div class="overflow-x-auto"><table class="table">
+      <thead><tr><th>Bill no.</th><th>Customer</th><th>Item</th><th>Delivery</th><th>Status</th><th class="text-right">Balance</th></tr></thead>
+      <tbody id="orders-body"></tbody>
+    </table></div>
+  </section>
+</section>
+
+<!-- ============ Pawning ============ -->
+<section data-screen="pawning" hidden>
+  <div class="mb-6 flex flex-col items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center">
+    <h1 class="text-xl font-bold text-slate-900">Pawning</h1>
+    <button class="btn-primary" onclick="openDialog('dlg-pawn')">+ New Pawn</button>
+  </div>
+  <div class="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4" id="pawn-stats"></div>
+  <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 p-4">
+      <input class="input max-w-md" placeholder="Scan barcode, or enter NIC, ticket/bill number, name or locker" />
+      <div class="flex flex-wrap gap-1 rounded-lg bg-canvas p-1"><span class="tab active">In stock</span><span class="tab">Released</span></div>
+    </div>
+    <div class="overflow-x-auto"><table class="table">
+      <thead><tr><th>Ticket</th><th>Customer</th><th>Item</th><th class="text-right">Principal</th><th>Due date</th><th>Locker</th></tr></thead>
+      <tbody id="pawns-body"></tbody>
+    </table></div>
+  </section>
+</section>
+
+<!-- ============ Shop Stock ============ -->
+<section data-screen="stock" hidden>
+  <div class="mb-6 flex flex-col items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center">
+    <h1 class="text-xl font-bold text-slate-900">Shop Stock</h1>
+    <div class="flex flex-wrap gap-2">
+      <button class="btn-primary" id="cart-btn">Cart (1) · Checkout</button>
+      <button class="btn-outline" onclick="showToast('Opens one 34 × 25 mm label per item in the filtered list')">Print labels (filtered)</button>
+      <button class="btn-gold" onclick="openDialog('dlg-add-stock')">Add item</button>
+    </div>
+  </div>
+  <div class="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4" id="stock-stats"></div>
+  <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-wrap items-center gap-3 border-b border-slate-200 p-4">
+      <input id="stock-q" class="input min-w-60 flex-1" placeholder="Scan barcode, or search item no., name, locker or buyer…" oninput="renderStock()" />
+      <select id="stock-cat" class="input w-auto" onchange="renderStock()"><option value="">All categories</option></select>
+      <select id="stock-status" class="input w-auto" onchange="renderStock()">
+        <option value="in_stock">In stock</option><option value="reserved">Reserved</option><option value="sold">Sold</option><option value="all">All statuses</option>
+      </select>
+      <select id="stock-karat" class="input w-auto" onchange="renderStock()">
+        <option value="">All karats</option><option>24</option><option>22</option><option>21</option><option>18</option><option>14</option>
+      </select>
+    </div>
+    <div class="overflow-x-auto"><table class="table">
+      <thead><tr><th>Item no.</th><th>Name</th><th>Category</th><th>Gold</th><th>Location</th><th class="text-right">Price</th><th>Status</th><th></th></tr></thead>
+      <tbody id="stock-body"></tbody>
+    </table></div>
+    <p id="stock-empty" class="hidden p-10 text-center text-sm text-foreground/60">No items match these filters.</p>
+  </section>
+</section>
+
+<!-- ============ Lockers ============ -->
+<section data-screen="lockers" hidden>
+  <div class="mb-6 flex flex-col items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center">
+    <div>
+      <h1 class="text-xl font-bold text-slate-900">Lockers</h1>
+      <p class="mt-0.5 text-xs text-slate-500">Name your safes, trays and display units, then assign each piece to one.</p>
+    </div>
+    <button class="btn-gold" onclick="openDialog('dlg-locker')">+ Add locker</button>
+  </div>
+  <section class="card mb-5">
+    <h2 class="card-title">Where is this item?</h2>
+    <div class="flex flex-wrap gap-2">
+      <input id="find-q" class="input min-w-0 flex-1" placeholder="Enter or scan item number, e.g. ST000001, bill or pawn ticket number" onkeydown="if(event.key==='Enter')findItem()" />
+      <button class="btn-gold" onclick="findItem()">Show location</button>
+    </div>
+    <div id="find-result" class="mt-3"></div>
+  </section>
+  <div id="locker-tabs" class="mb-4 flex w-fit flex-wrap gap-1 rounded-lg bg-white p-1 ring-1 ring-slate-200"></div>
+  <div id="locker-cards" class="grid gap-4 md:grid-cols-2"></div>
+</section>
+
+<!-- ============ Reports ============ -->
+<section data-screen="reports" hidden>
+  <div class="mb-6 flex flex-col items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center">
+    <div>
+      <h1 class="text-xl font-bold text-slate-900">Stock Report</h1>
+      <p id="report-sub" class="mt-0.5 text-xs text-slate-500"></p>
+    </div>
+    <button class="btn-gold" onclick="showToast('Downloads the report as an A4 landscape PDF')">Download PDF</button>
+  </div>
+  <div class="mb-4 flex w-fit flex-wrap gap-1 rounded-lg bg-white p-1 ring-1 ring-slate-200">
+    <span class="tab active" data-report="onhand" onclick="setReport('onhand')">Stock on a date</span>
+    <span class="tab" data-report="movement" onclick="setReport('movement')">Stock movement (date range)</span>
+  </div>
+  <div id="report-body"></div>
+</section>
+
+</main>
+
+<!-- ============ Popups ============ -->
+
+<!-- Stock item: preview → edit → save -->
+<dialog id="dlg-item" class="m-auto max-h-[94vh] w-[min(96vw,80rem)] overflow-y-auto rounded-2xl bg-canvas p-4 text-slate-900 shadow-2xl sm:p-6">
+  <div class="mb-2 flex justify-end"><button class="text-2xl leading-none text-slate-400 hover:text-slate-700" onclick="closeDialog('dlg-item')">&times;</button></div>
+  <div id="item-content"></div>
+</dialog>
+
+<dialog id="dlg-delete" class="m-auto w-[min(92vw,26rem)] rounded-2xl bg-white p-6 text-slate-900 shadow-2xl">
+  <h2 class="text-base font-bold">Delete this item?</h2>
+  <p class="mt-2 text-sm text-foreground/70"><strong id="delete-label"></strong> will be removed from shop stock. This can't be undone. Use this only for items added by mistake.</p>
+  <div class="mt-5 flex justify-end gap-2">
+    <button class="btn-outline" onclick="closeDialog('dlg-delete')">No, keep it</button>
+    <button class="btn-danger" onclick="confirmDelete()">Yes, delete</button>
+  </div>
+</dialog>
+
+<dialog id="dlg-add-stock" class="m-auto max-h-[92vh] w-[min(94vw,64rem)] overflow-y-auto rounded-2xl bg-white p-6 text-slate-900 shadow-2xl">
+  <div class="mb-4 flex items-start justify-between border-b border-slate-200 pb-3">
+    <h2 class="text-base font-bold">Add Stock Item</h2>
+    <button class="text-lg text-slate-400 hover:text-slate-700" onclick="closeDialog('dlg-add-stock')">&times;</button>
+  </div>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" id="add-stock-fields"></div>
+  <div class="mt-4"><button class="btn-primary px-8" onclick="closeDialog('dlg-add-stock'); showToast('Item saved with barcode ST000008 (preview only)')">Save item &amp; generate barcode</button></div>
+</dialog>
+
+<dialog id="dlg-order" class="m-auto max-h-[92vh] w-[min(94vw,64rem)] overflow-y-auto rounded-2xl bg-white p-6 text-slate-900 shadow-2xl">
+  <div class="mb-4 flex items-start justify-between border-b border-slate-200 pb-3">
+    <h2 class="text-base font-bold">New Order</h2>
+    <button class="text-lg text-slate-400 hover:text-slate-700" onclick="closeDialog('dlg-order')">&times;</button>
+  </div>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <label><span class="label">Customer name</span><input class="input" /></label>
+    <label><span class="label">Phone number</span><input class="input" placeholder="07X XXX XXXX" /></label>
+    <label class="sm:col-span-2"><span class="label">Address</span><input class="input" /></label>
+    <label><span class="label">Item category</span><select class="input category-select"></select></label>
+    <label><span class="label">Carats</span><select class="input"><option>22K</option><option>24K</option><option>18K</option></select></label>
+    <label><span class="label">Delivery date</span><input type="date" class="input" /></label>
+    <label><span class="label">Advance (Rs.)</span><input type="number" class="input" /></label>
+    <label class="sm:col-span-4"><span class="label">Notes</span><textarea rows="2" class="input"></textarea></label>
+  </div>
+  <div class="mt-4"><button class="btn-primary px-8" onclick="closeDialog('dlg-order'); showToast('Order saved (preview only)')">Save order</button></div>
+</dialog>
+
+<dialog id="dlg-pawn" class="m-auto max-h-[92vh] w-[min(94vw,64rem)] overflow-y-auto rounded-2xl bg-white p-6 text-slate-900 shadow-2xl">
+  <div class="mb-4 flex items-start justify-between border-b border-slate-200 pb-3">
+    <h2 class="text-base font-bold">New Pawn</h2>
+    <button class="text-lg text-slate-400 hover:text-slate-700" onclick="closeDialog('dlg-pawn')">&times;</button>
+  </div>
+  <div class="space-y-5">
+    <fieldset class="grid gap-3 sm:grid-cols-2"><legend class="mb-2 font-bold text-ink">Customer</legend>
+      <label><span class="label">Customer name</span><input class="input" /></label>
+      <label><span class="label">NIC number</span><input class="input uppercase" placeholder="123456789V or 200012345678" /></label>
+      <label><span class="label">Phone number</span><input class="input" placeholder="07X XXX XXXX" /></label>
+      <label><span class="label">Address</span><input class="input" /></label>
+    </fieldset>
+    <fieldset class="grid gap-3 sm:grid-cols-2"><legend class="mb-2 font-bold text-ink">Item</legend>
+      <label><span class="label">Item category</span><select class="input category-select"></select></label>
+      <label><span class="label">Standard</span><select class="input"><option>22K</option><option>24K</option></select></label>
+      <label><span class="label">Gross weight (optional)</span><input class="input" placeholder="g" /></label>
+      <label><span class="label">Net weight</span><input class="input" placeholder="g" /></label>
+      <label><span class="label">Locker</span><select class="input locker-select"><option value="">Choose a locker…</option></select></label>
+      <label><span class="label">Position inside locker</span><input class="input" placeholder="e.g. Tray 2, slot 5" /></label>
+    </fieldset>
+    <fieldset class="grid gap-3 sm:grid-cols-3"><legend class="mb-2 font-bold text-ink">Loan</legend>
+      <label><span class="label">Assessed value (Rs.)</span><input type="number" class="input" /></label>
+      <label><span class="label">Principal amount (Rs.)</span><input type="number" class="input" /></label>
+      <label><span class="label">Monthly interest rate (%)</span><input type="number" class="input" placeholder="e.g. 2.5" /></label>
+    </fieldset>
+  </div>
+  <div class="mt-4"><button class="btn-primary px-8" onclick="closeDialog('dlg-pawn'); showToast('Pawn saved (preview only)')">Save pawn &amp; generate barcode</button></div>
+</dialog>
+
+<dialog id="dlg-locker" class="m-auto w-[min(94vw,28rem)] rounded-2xl bg-white p-6 text-slate-900 shadow-2xl">
+  <div class="mb-4 flex items-start justify-between border-b border-slate-200 pb-3">
+    <h2 class="text-base font-bold">Add locker</h2>
+    <button class="text-lg text-slate-400 hover:text-slate-700" onclick="closeDialog('dlg-locker')">&times;</button>
+  </div>
+  <div class="space-y-4">
+    <label class="block"><span class="label">Locker name *</span><input class="input" placeholder="e.g. Safe A" /></label>
+    <label class="block"><span class="label">Where is it? (description)</span><input class="input" placeholder="Back room, left wall, second shelf" /></label>
+    <button class="btn-gold w-full" onclick="closeDialog('dlg-locker'); showToast('Locker added (preview only)')">Save locker</button>
+  </div>
+</dialog>
+
+<div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-50 hidden -translate-x-1/2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-2xl"></div>
+
+<script>
+/* ---------------- Sample data ---------------- */
+const RATE22 = 4000;
+const categories = [
+  { code: "RIN", name: "Ring" }, { code: "ANK", name: "Anklet" }, { code: "EA", name: "Earrings" },
+  { code: "BAN", name: "Bangle" }, { code: "NEC", name: "Necklace" },
+];
+const catName = (c) => categories.find((x) => x.code === c)?.name ?? c;
+const lockers = [
+  { name: "Safe A", desc: "Back room, top shelf" },
+  { name: "Safe B", desc: "Back room, bottom shelf" },
+  { name: "Display counter", desc: "Front shop, glass case" },
+  { name: "P-Safe", desc: "Pawned items, strong room" },
+];
+let stock = [
+  { id: 1, code: "ST000007", name: "Ladies ring with red stone", category: "RIN", karat: 22, mg: 8000, pricing: { making: 1500, wastage: 5, stones: 2000 }, price: 0, cost: 30000, locker: "Safe A", slot: "Tray 1", location: "", maker: "Sunil", status: "in_stock", notes: "" },
+  { id: 2, code: "ST000005", name: "Anklet pair", category: "ANK", karat: 22, mg: 18500, pricing: null, price: 85000, cost: 70000, locker: "Safe A", slot: "Tray 2", location: "", maker: "", status: "in_stock", notes: "" },
+  { id: 3, code: "ST000004", name: "Drop earrings", category: "EA", karat: 22, mg: 6200, pricing: { making: 2500, wastage: 8, stones: 0 }, price: 0, cost: null, locker: "Display counter", slot: "", location: "Showcase 2", maker: "", status: "in_stock", notes: "" },
+  { id: 4, code: "ST000003", name: "Plain bangle", category: "BAN", karat: 22, mg: 24000, pricing: null, price: 120000, cost: 95000, locker: "Safe B", slot: "Box 3", location: "", maker: "Ruwan", status: "reserved", notes: "" },
+  { id: 5, code: "ST000002", name: "Chain necklace", category: "NEC", karat: 24, mg: 15000, pricing: null, price: 72000, cost: 60000, locker: null, slot: "", location: "", maker: "", status: "sold", notes: "" },
+  { id: 6, code: "ST000001", name: "Gents ring", category: "RIN", karat: 18, mg: 7000, pricing: null, price: 26000, cost: 21000, locker: "Safe B", slot: "Tray 1", location: "", maker: "", status: "in_stock", notes: "" },
+];
+const orders = [
+  { bill: "OR000014", customer: "Nimal Perera", category: "RIN", delivery: "12 Nov 2026", status: "In progress", balance: 18000, locker: null },
+  { bill: "OR000013", customer: "Kamala Silva", category: "NEC", delivery: "9 Nov 2026", status: "Completed", balance: 25000, locker: "Safe B / Box 1" },
+  { bill: "OR000012", customer: "Saman Fernando", category: "BAN", delivery: "2 Nov 2026", status: "Pending", balance: 40000, locker: null },
+];
+const pawns = [
+  { ticket: "PW000021", customer: "R. Jayasinghe", category: "NEC", mg: 12500, principal: 150000, due: "15 Jan 2027", locker: "P-Safe / Slot 4" },
+  { ticket: "PW000020", customer: "M. Fathima", category: "BAN", mg: 20000, principal: 210000, due: "3 Dec 2026", locker: "P-Safe / Slot 3" },
+];
+
+/* ---------------- Helpers ---------------- */
+const rs = (n) => "Rs. " + Number(n).toLocaleString("en-LK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const rs0 = (n) => "Rs. " + Number(n).toLocaleString("en-LK", { maximumFractionDigits: 2 });
+const g = (mg) => (mg / 1000).toFixed(3) + " g";
+const rate = (karat) => (RATE22 / 22) * karat;
+function priceOf(i) {
+  if (!i.pricing) return i.price;
+  const gold = (i.mg / 1000) * rate(i.karat);
+  return Math.round(gold + (gold * i.pricing.wastage) / 100 + i.pricing.making + i.pricing.stones);
+}
+const lockerLabel = (i) => (i.locker ? i.locker + (i.slot ? " / " + i.slot : "") : null);
+const statusPill = (s) => (s === "sold" ? '<span class="pill-gray">Sold</span>' : s === "reserved" ? '<span class="pill-ink">Reserved</span>' : '<span class="pill-green">In stock</span>');
+function stat(label, value, hint, icon, dark) {
+  return `<div class="rounded-xl border p-5 shadow-sm ${dark ? "bg-gradient-to-br from-slate-900 to-slate-800 text-white border-slate-700" : "bg-white border-slate-200"}">
+    <div class="flex items-center justify-between gap-2"><span class="text-xs font-semibold uppercase ${dark ? "text-amber-300" : "text-slate-500"}">${label}</span>${icon ? `<span class="rounded-lg p-2 text-lg leading-none ${dark ? "bg-white/10" : "bg-slate-50"}">${icon}</span>` : ""}</div>
+    <p class="mt-2 text-2xl font-black ${dark ? "text-white" : "text-slate-900"}">${value}</p>${hint ? `<p class="mt-2 text-xs ${dark ? "text-slate-300" : "text-slate-500"}">${hint}</p>` : ""}</div>`;
+}
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.remove("hidden");
+  clearTimeout(t._timer); t._timer = setTimeout(() => t.classList.add("hidden"), 2500);
+}
+const openDialog = (id) => document.getElementById(id).showModal();
+const closeDialog = (id) => document.getElementById(id).close();
+
+/* ---------------- Navigation ---------------- */
+const screens = [
+  ["dashboard", "📊 Dashboard"], ["orders", "📋 Orders"], ["billing", "🛒 Billing"], ["pawning", "🔒 Pawning"],
+  ["stock", "📦 Shop Stock"], ["lockers", "🗄️ Lockers"], ["reports", "📑 Reports"], ["settings", "⚙️ Settings"],
+];
+function go(screen) {
+  if (screen === "billing" || screen === "settings") return showToast("This screen isn't included in the preview");
+  document.querySelectorAll("[data-screen]").forEach((s) => (s.hidden = s.dataset.screen !== screen));
+  document.querySelectorAll("#nav .nav-link").forEach((a) => a.classList.toggle("active", a.dataset.go === screen));
+  window.scrollTo(0, 0);
+}
+document.getElementById("nav").innerHTML = screens.map(([k, l]) => `<span class="nav-link" data-go="${k}" onclick="go('${k}')">${l}</span>`).join("");
+
+/* ---------------- Dashboard ---------------- */
+function renderDashboard() {
+  const inStock = stock.filter((i) => i.status !== "sold");
+  document.getElementById("dash-orders").innerHTML =
+    stat("In progress", 4, "", "💍", true) + stat("Due within 1 week", 2, "", "⏳") + stat("Due today / overdue", 1, "", "⚠️") + stat("Ready for collection", 1, "Completed, waiting for payment/pickup", "✅");
+  document.getElementById("dash-pawns").innerHTML =
+    stat("Active pawned items", pawns.length, "Net " + g(pawns.reduce((s, p) => s + p.mg, 0)), "🔒", true) +
+    stat("Principal lent", rs(pawns.reduce((s, p) => s + p.principal, 0)), "", "💰") + stat("Accrued interest", rs(18450), "Unpaid, as of today", "📈") +
+    stat("Lockers", lockers.length, "9 items stored in lockers", "🗄️");
+  document.getElementById("dash-stock").innerHTML =
+    stat("Items in stock", inStock.length, "Total " + g(inStock.reduce((s, i) => s + i.mg, 0)) + " · 1 reserved", "📦", true) +
+    stat("Stock value", rs(inStock.reduce((s, i) => s + priceOf(i), 0)), "At today's gold rate", "⚖️") + stat("Sold today", 1, "", "🏷️") + stat("Sales today", rs(72000), "", "💵");
+}
+
+/* ---------------- Orders & pawning ---------------- */
+function renderOrders() {
+  const pill = { "In progress": "pill-blue", Completed: "pill-green", Pending: "pill-gray" };
+  document.getElementById("orders-body").innerHTML = orders.map((o) => `<tr class="cursor-pointer">
+    <td class="font-mono font-semibold">${o.bill}</td><td>${o.customer}</td><td>${catName(o.category)}</td><td>${o.delivery}</td>
+    <td><span class="flex items-center gap-2"><span class="${pill[o.status]}">${o.status}</span>${o.locker ? `<span class="text-xs font-semibold text-ink">${o.locker}</span>` : ""}</span></td>
+    <td class="text-right">${rs(o.balance)}</td></tr>`).join("");
+}
+function renderPawning() {
+  document.getElementById("pawn-stats").innerHTML =
+    stat("Items in stock", pawns.length, "", "", true) + stat("Total principal", rs(360000), "Assessed Rs. 480,000.00") + stat("Accrued interest", rs(18450), "Unpaid, as of today") + stat("Net weight", g(32500));
+  document.getElementById("pawns-body").innerHTML = pawns.map((p) => `<tr class="cursor-pointer">
+    <td class="font-mono font-semibold">${p.ticket}</td><td>${p.customer}</td><td>${catName(p.category)} · ${g(p.mg)}</td>
+    <td class="text-right">${rs(p.principal)}</td><td>${p.due}</td><td class="font-semibold text-ink">${p.locker}</td></tr>`).join("");
+}
+
+/* ---------------- Shop stock ---------------- */
+let cart = new Set([2]);
+function renderStock() {
+  const q = document.getElementById("stock-q").value.trim().toLowerCase();
+  const cat = document.getElementById("stock-cat").value;
+  const status = document.getElementById("stock-status").value;
+  const karat = document.getElementById("stock-karat").value;
+  const list = stock.filter((i) =>
+    (status === "all" || i.status === status) && (!cat || i.category === cat) && (!karat || String(i.karat) === karat) &&
+    (!q || [i.code, i.name, i.locker, i.slot, i.location].join(" ").toLowerCase().includes(q)));
+  document.getElementById("stock-body").innerHTML = list.map((i) => `<tr class="cursor-pointer" onclick="if(!event.target.closest('button'))openItem(${i.id})">
+    <td class="font-mono text-sm whitespace-nowrap">${i.code}</td>
+    <td class="font-semibold">${i.name}</td>
+    <td class="whitespace-nowrap">${catName(i.category)}</td>
+    <td class="whitespace-nowrap"><p>${i.karat}K</p><p class="text-sm text-foreground/60">${g(i.mg)}</p></td>
+    <td class="text-sm"><p>${lockerLabel(i) ?? (i.location ? "" : "—")}</p>${i.location ? `<p class="text-foreground/60">${i.location}</p>` : ""}</td>
+    <td class="text-right whitespace-nowrap">${rs(priceOf(i))}</td>
+    <td class="whitespace-nowrap">${statusPill(i.status)}</td>
+    <td><div class="flex items-center justify-end gap-2">
+      ${i.status === "in_stock" ? (cart.has(i.id) ? `<button class="btn-outline sm-btn">✓ In cart</button>` : `<button class="btn-success sm-btn" onclick="addToCart(${i.id})">+ Add to cart</button>`) : ""}
+      <button class="btn-outline sm-btn" onclick="showToast('Opens the barcode label popup for ${i.code}')">Barcode</button>
+    </div></td></tr>`).join("");
+  document.getElementById("stock-empty").classList.toggle("hidden", list.length > 0);
+  document.getElementById("cart-btn").textContent = `Cart (${cart.size}) · Checkout`;
+  const inStock = stock.filter((i) => i.status !== "sold");
+  document.getElementById("stock-stats").innerHTML =
+    stat("Items in stock", inStock.length, "Total " + g(inStock.reduce((s, i) => s + i.mg, 0)) + " · 1 reserved", "", true) +
+    stat("Stock value", rs(inStock.reduce((s, i) => s + priceOf(i), 0)), "At today's gold rate") + stat("Sold today", 1) + stat("Sales today", rs(72000));
+}
+function addToCart(id) { cart.add(id); renderStock(); if (currentItem === id) renderItem(); }
+
+/* ---------------- Stock item popup ---------------- */
+let currentItem = null, editing = false, savedMsg = "";
+function openItem(id) { currentItem = id; editing = false; savedMsg = ""; renderItem(); openDialog("dlg-item"); }
+function detail(label, value) { return `<div><dt class="dt">${label}</dt><dd class="dd">${value}</dd></div>`; }
+function renderItem() {
+  const i = stock.find((x) => x.id === currentItem);
+  const inStock = i.status === "in_stock";
+  const price = priceOf(i);
+  const header = `<div class="mb-6 flex flex-col items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center">
+    <div><div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+      <h1 class="text-xl font-bold text-slate-900">${i.code} · ${i.name}</h1>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="rounded-lg bg-amber-50 px-2.5 py-1 ring-1 ring-gold/40"><span class="text-foreground/60">Locker </span><strong>${lockerLabel(i) ?? (i.status === "sold" ? "— (released on sale)" : "Not assigned")}</strong></span>
+        <span class="rounded-lg bg-canvas px-2.5 py-1 ring-1 ring-slate-200"><span class="text-foreground/60">Location </span><strong>${i.location || "—"}</strong></span>
+      </div></div>
+      <p class="mt-0.5 text-xs text-slate-500">Added 28 Oct 2026, 22:27</p></div>
+    <div class="flex flex-wrap gap-2">
+      <button class="btn-gold" onclick="showToast('Opens the 34 × 25 mm barcode label to print')">Print barcode label</button>
+      ${inStock ? (cart.has(i.id) ? `<button class="btn-outline">✓ In cart</button>` : `<button class="btn-success" onclick="addToCart(${i.id})">+ Add to cart</button>`) : ""}
+    </div></div>`;
+  const pill = statusPill(i.status);
+  const margin = i.cost != null ? price - i.cost : null;
+  const details = `<dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    ${detail("Item", i.name)}${detail("Category", `${catName(i.category)} (${i.category})`)}${detail("Carats", i.karat + "K")}${detail("Weight", g(i.mg))}
+    ${detail(i.status === "sold" ? "Sold for" : i.pricing ? "Today's price (daily gold rate)" : "Fixed price", `<span class="text-base font-bold">${rs(price)}</span>`)}
+    ${margin != null ? detail("Cost / margin", `${rs(i.cost)} · <span class="${margin < 0 ? "text-red-700" : "text-emerald-700"}">${rs(margin)}</span>`) : ""}
+    ${detail("Made by", i.maker || "—")}${i.notes ? detail("Notes", i.notes) : ""}</dl>`;
+  let body;
+  if (!inStock) body = details;
+  else if (!editing) body = `<div class="space-y-4">
+      ${savedMsg ? `<p class="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800">${savedMsg}</p>` : ""}
+      ${details}
+      <div class="flex flex-wrap items-center justify-end gap-2">
+        <button class="btn-outline" onclick="closeDialog('dlg-item')">Cancel</button>
+        <button class="btn-danger" onclick="askDelete()">Delete</button>
+        <button class="btn-primary" onclick="editing=true; savedMsg=''; renderItem()">Edit</button>
+      </div></div>`;
+  else body = editForm(i);
+  const side = i.status === "reserved"
+    ? `<section class="card space-y-3"><h2 class="card-title mb-0">Reserved</h2><p class="text-sm text-foreground/70">Held for <strong>K. Perera</strong> (077 123 4567) on reservation RS000003 until 20 Nov 2026. It can't be sold to anyone else.</p><button class="btn-primary w-full">Open reservation in Billing</button></section>`
+    : i.status === "sold"
+    ? `<section class="card"><h2 class="card-title">Sale</h2><dl class="space-y-3 text-sm">${detail("Customer", "A. Bandara · 071 555 1234")}${detail("Item price", rs(price))}${detail("Paid by", "Cash")}${detail("Sold on", "9 Nov 2026, 10:15")}${detail("Receipt", "RC000045")}</dl></section>`
+    : "";
+  document.getElementById("item-content").innerHTML = header +
+    `<div class="${inStock ? "" : "grid gap-6 lg:grid-cols-3"}"><div class="${inStock ? "" : "lg:col-span-2"}"><section class="card">
+      <div class="flex flex-wrap items-start justify-between gap-4"><h2 class="card-title">Item details</h2>${pill}</div>${body}</section></div>
+      ${side ? `<div class="space-y-4">${side}</div>` : ""}</div>`;
+  if (editing) updatePreview();
+}
+function editForm(i) {
+  const opt = (list, sel) => list.map(([v, l]) => `<option value="${v}" ${v === sel ? "selected" : ""}>${l}</option>`).join("");
+  const p = i.pricing ?? { making: 0, wastage: 0, stones: 0 };
+  return `<form id="edit-form" class="space-y-4" oninput="updatePreview()" onchange="updatePreview()" onsubmit="event.preventDefault(); saveEdit()">
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <label class="sm:col-span-2"><span class="label">Item name</span><input name="name" class="input" value="${i.name}" required /></label>
+      <label><span class="label">Item category</span><select name="category" class="input">${opt(categories.map((c) => [c.code, `${c.name} (${c.code})`]), i.category)}</select></label>
+      <label><span class="label">Locker</span><select name="locker" class="input"><option value="">Not assigned</option>${opt(lockers.map((l) => [l.name, `${l.name} - ${l.desc}`]), i.locker)}</select></label>
+      <label><span class="label">Position inside locker</span><input name="slot" class="input" value="${i.slot}" placeholder="e.g. Tray 2, slot 5" /></label>
+      <label><span class="label">Number of carats</span><select name="karat" class="input">${opt([24, 22, 21, 18, 14].map((k) => [String(k), k + "K"]), String(i.karat))}</select></label>
+      <div><span class="label">Weight</span><div class="grid grid-cols-2 gap-2">
+        <input name="g" type="number" min="0" class="input" value="${Math.floor(i.mg / 1000)}" placeholder="g" />
+        <input name="mg" type="number" min="0" max="999" class="input" value="${i.mg % 1000}" placeholder="mg" /></div></div>
+      <label><span class="label">Cost price (Rs., optional)</span><input name="cost" type="number" min="0" class="input" value="${i.cost ?? ""}" /></label>
+      <fieldset class="space-y-3 rounded-xl border border-slate-200 p-3 sm:col-span-2 lg:col-span-4">
+        <legend class="px-1 text-sm font-semibold text-ink">Selling price</legend>
+        <div class="flex w-fit gap-1 rounded-lg bg-slate-100 p-1">
+          <button type="button" data-mode="rate" class="mode rounded-md px-3 py-1.5 text-sm font-semibold" onclick="setMode('rate')">Daily gold rate</button>
+          <button type="button" data-mode="fixed" class="mode rounded-md px-3 py-1.5 text-sm font-semibold" onclick="setMode('fixed')">Fixed price</button>
+        </div>
+        <input type="hidden" name="mode" value="${i.pricing ? "rate" : "fixed"}" />
+        <div id="rate-box" class="grid gap-3 lg:grid-cols-2 lg:items-start">
+          <div class="space-y-2">
+            <div class="grid gap-3 sm:grid-cols-3">
+              <label><span class="label">Making charge (Rs.)</span><input name="making" type="number" min="0" class="input" value="${p.making}" /></label>
+              <label><span class="label">Wastage (%)</span><input name="wastage" type="number" min="0" max="100" class="input" value="${p.wastage}" /></label>
+              <label><span class="label">Stone value (Rs.)</span><input name="stones" type="number" min="0" class="input" value="${p.stones}" /></label>
+            </div>
+            <p class="text-xs text-foreground/50">The price updates automatically whenever the daily gold rates change.</p>
+          </div>
+          <dl id="breakdown" class="space-y-0.5 rounded-xl bg-canvas px-3 py-2 text-sm"></dl>
+        </div>
+        <div id="fixed-box" class="space-y-3 sm:max-w-xs">
+          <label class="block"><span class="label">Selling price (Rs.)</span><input name="price" type="number" min="0" class="input" value="${i.price || priceOf(i)}" /></label>
+          <dl id="fixed-cost" class="space-y-1 rounded-xl bg-canvas p-3 text-sm"></dl>
+        </div>
+      </fieldset>
+      <label><span class="label">Made by (optional)</span><select name="maker" class="input"><option value="">— None —</option>${opt([["Sunil", "Sunil"], ["Ruwan", "Ruwan"]], i.maker)}</select></label>
+      <label><span class="label">Display location (optional)</span><input name="location" class="input" value="${i.location}" placeholder="e.g. Showcase 2" /></label>
+      <label class="sm:col-span-2"><span class="label">Notes (optional)</span><textarea name="notes" rows="1" class="input">${i.notes}</textarea></label>
+    </div>
+    <div class="flex flex-wrap items-center justify-end gap-2">
+      <button type="button" class="btn-outline" onclick="editing=false; renderItem()">Cancel</button>
+      <button type="button" class="btn-danger" onclick="askDelete()">Delete</button>
+      <button type="submit" class="btn-primary">Save changes</button>
+    </div></form>`;
+}
+function readForm() {
+  const f = document.getElementById("edit-form");
+  const v = (n) => f.elements[n].value;
+  return { name: v("name"), category: v("category"), locker: v("locker") || null, slot: v("slot"), karat: Number(v("karat")),
+    mg: (Number(v("g")) || 0) * 1000 + (Number(v("mg")) || 0), cost: v("cost") === "" ? null : Number(v("cost")), mode: v("mode"),
+    pricing: { making: Number(v("making")) || 0, wastage: Number(v("wastage")) || 0, stones: Number(v("stones")) || 0 },
+    price: Number(v("price")) || 0, maker: v("maker"), location: v("location"), notes: v("notes") };
+}
+function costLines(price, cost) {
+  if (!cost) return "";
+  const m = price - cost;
+  return `<div class="flex justify-between pt-1"><dt class="text-foreground/60">Cost price</dt><dd>${rs0(cost)}</dd></div>
+    <div class="flex justify-between font-semibold ${m < 0 ? "text-red-700" : "text-emerald-700"}"><dt>Margin</dt><dd>${rs0(m)}${price > 0 ? ` (${((m / price) * 100).toFixed(1)}%)` : ""}</dd></div>`;
+}
+function setMode(mode) { document.getElementById("edit-form").elements.mode.value = mode; updatePreview(); }
+function updatePreview() {
+  const d = readForm();
+  document.querySelectorAll("#edit-form .mode").forEach((b) => {
+    const on = b.dataset.mode === d.mode;
+    b.className = `mode rounded-md px-3 py-1.5 text-sm font-semibold ${on ? "bg-ink text-white shadow-sm" : "text-ink hover:bg-white"}`;
+  });
+  document.getElementById("rate-box").hidden = d.mode !== "rate";
+  document.getElementById("fixed-box").hidden = d.mode !== "fixed";
+  const gold = Math.round((d.mg / 1000) * rate(d.karat));
+  const wastage = Math.round((gold * d.pricing.wastage) / 100);
+  const total = gold + wastage + d.pricing.making + d.pricing.stones;
+  document.getElementById("breakdown").innerHTML = `
+    <div class="flex justify-between"><dt class="text-foreground/60">Gold (${(d.mg / 1000).toFixed(3)} g × ${rs0(rate(d.karat))})</dt><dd>${rs0(gold)}</dd></div>
+    <div class="flex justify-between"><dt class="text-foreground/60">Wastage</dt><dd>${rs0(wastage)}</dd></div>
+    <div class="flex justify-between"><dt class="text-foreground/60">Making charge</dt><dd>${rs0(d.pricing.making)}</dd></div>
+    <div class="flex justify-between"><dt class="text-foreground/60">Stones</dt><dd>${rs0(d.pricing.stones)}</dd></div>
+    <div class="flex justify-between border-t border-slate-200 pt-1 text-base font-bold"><dt>Today's price</dt><dd>${rs0(total)}</dd></div>
+    ${costLines(total, d.cost)}`;
+  const fixed = document.getElementById("fixed-cost");
+  fixed.innerHTML = costLines(d.price, d.cost);
+  fixed.hidden = !d.cost;
+}
+function saveEdit() {
+  const d = readForm();
+  const i = stock.find((x) => x.id === currentItem);
+  Object.assign(i, { name: d.name, category: d.category, locker: d.locker, slot: d.slot, karat: d.karat, mg: d.mg, cost: d.cost,
+    pricing: d.mode === "rate" ? d.pricing : null, price: d.mode === "fixed" ? d.price : 0, maker: d.maker, location: d.location, notes: d.notes });
+  editing = false; savedMsg = "Item details saved"; renderItem(); renderStock(); renderLockers();
+}
+function askDelete() {
+  const i = stock.find((x) => x.id === currentItem);
+  document.getElementById("delete-label").textContent = `${i.code} (${i.name})`;
+  openDialog("dlg-delete");
+}
+function confirmDelete() {
+  const i = stock.find((x) => x.id === currentItem);
+  stock = stock.filter((x) => x.id !== currentItem); cart.delete(currentItem);
+  closeDialog("dlg-delete"); closeDialog("dlg-item"); renderStock(); renderLockers(); renderDashboard();
+  showToast(`Deleted ${i.code} (preview only)`);
+}
+
+/* ---------------- Add stock popup fields ---------------- */
+document.getElementById("add-stock-fields").innerHTML = `
+  <label class="sm:col-span-2"><span class="label">Item name</span><input class="input" placeholder="e.g. Ladies ring with red stone" /></label>
+  <label><span class="label">Item category</span><select class="input category-select"></select></label>
+  <label><span class="label">Locker</span><select class="input locker-select"><option value="">Not assigned</option></select></label>
+  <label><span class="label">Position inside locker</span><input class="input" placeholder="e.g. Tray 2, slot 5" /></label>
+  <label><span class="label">Number of carats</span><select class="input"><option>22K</option><option>24K</option><option>18K</option></select></label>
+  <div><span class="label">Weight</span><div class="grid grid-cols-2 gap-2"><input class="input" placeholder="g" /><input class="input" placeholder="mg" /></div></div>
+  <label><span class="label">Cost price (Rs., optional)</span><input type="number" class="input" /></label>
+  <label><span class="label">Made by (optional)</span><select class="input"><option>— None —</option></select></label>
+  <label><span class="label">Display location (optional)</span><input class="input" placeholder="e.g. Showcase 2" /></label>
+  <label class="sm:col-span-2"><span class="label">Notes (optional)</span><textarea rows="1" class="input"></textarea></label>`;
+document.querySelectorAll(".category-select").forEach((s) => (s.innerHTML = categories.map((c) => `<option>${c.name} (${c.code})</option>`).join("")));
+document.querySelectorAll(".locker-select").forEach((s) => (s.innerHTML += lockers.map((l) => `<option>${l.name} - ${l.desc}</option>`).join("")));
+document.getElementById("stock-cat").innerHTML += categories.map((c) => `<option value="${c.code}">${c.name}</option>`).join("");
+
+/* ---------------- Lockers ---------------- */
+let lockerFilter = "all";
+function lockerContents() {
+  return [
+    ...stock.filter((i) => i.locker && i.status !== "sold").map((i) => ({ kind: "stock", ref: i.code, label: i.name, locker: i.locker, slot: i.slot })),
+    { kind: "order", ref: "OR000013", label: "Kamala Silva", locker: "Safe B", slot: "Box 1" },
+    ...pawns.map((p) => ({ kind: "pawn", ref: p.ticket, label: p.customer, locker: "P-Safe", slot: p.locker.split(" / ")[1] })),
+  ];
+}
+function renderLockers() {
+  const all = lockerContents();
+  const tabs = [["all", "All"], ["order", "Orders"], ["pawn", "Pawning"], ["stock", "Shop stock"]];
+  document.getElementById("locker-tabs").innerHTML = tabs.map(([k, l]) =>
+    `<span class="tab ${lockerFilter === k ? "active" : ""}" onclick="lockerFilter='${k}'; renderLockers()">${l} <span class="opacity-70">(${k === "all" ? all.length : all.filter((c) => c.kind === k).length})</span></span>`).join("");
+  const contents = lockerFilter === "all" ? all : all.filter((c) => c.kind === lockerFilter);
+  const shown = lockerFilter === "all" ? lockers : lockers.filter((l) => contents.some((c) => c.locker === l.name));
+  const kindLabel = { stock: "Shop stock", order: "Customer order", pawn: "Pawned item" };
+  document.getElementById("locker-cards").innerHTML = shown.map((l) => {
+    const items = contents.filter((c) => c.locker === l.name);
+    return `<section class="card">
+      <div class="flex items-start justify-between gap-2"><h2 class="text-base font-bold text-slate-900">${l.name}</h2>
+        <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-semibold text-stone-600 ring-1 ring-stone-300">${items.length} item${items.length === 1 ? "" : "s"}</span></div>
+      <p class="text-sm text-foreground/60">${l.desc}</p>
+      <div class="mt-3 flex flex-wrap gap-1.5">${items.length ? items.map((c) =>
+        `<span title="${kindLabel[c.kind]} · ${c.label}" class="cursor-pointer rounded-md bg-canvas px-2 py-0.5 font-mono text-xs ring-1 ring-slate-200 hover:bg-amber-50 hover:ring-gold">${c.ref}${c.slot ? " @ " + c.slot : ""}</span>`).join("") : '<span class="text-sm text-foreground/50">Empty</span>'}</div>
+      <div class="mt-3"><button class="btn-outline sm-btn" onclick="showToast('Opens the edit locker popup (name, description, delete)')">Edit</button></div></section>`;
+  }).join("") || `<p class="rounded-xl border border-dashed border-slate-200 bg-white/60 p-8 text-center text-sm text-foreground/60 md:col-span-2">No items of this kind in any locker.</p>`;
+}
+function findItem() {
+  const q = document.getElementById("find-q").value.trim().toUpperCase();
+  const el = document.getElementById("find-result");
+  if (!q) return (el.innerHTML = "");
+  const i = stock.find((x) => x.code === q);
+  const p = pawns.find((x) => x.ticket === q);
+  if (!i && !p) return (el.innerHTML = `<div class="rounded-xl border border-slate-200 bg-canvas px-4 py-3"><p class="font-bold">No item “${q}”</p><p class="text-sm text-foreground/60">Check the number on the label and try again.</p></div>`);
+  const ref = i ? i.code : p.ticket, kind = i ? "Shop stock" : "Pawned item", label = i ? i.name : p.customer;
+  const locker = i ? (i.status === "sold" ? null : i.locker) : "P-Safe";
+  const slot = i ? i.slot : p.locker.split(" / ")[1];
+  const desc = lockers.find((l) => l.name === locker)?.desc ?? "";
+  el.innerHTML = `<div class="space-y-2"><p class="text-sm"><span class="font-mono font-semibold text-ink underline">${ref}</span><span class="text-foreground/60"> · ${kind} · ${label}</span></p>
+    ${locker ? `<div class="flex flex-col gap-0.5 rounded-xl border-2 border-gold bg-amber-50 px-4 py-3"><span class="text-xs font-semibold text-foreground/60">Storage location</span>
+      <span class="text-2xl leading-tight font-bold" style="font-family: Georgia, serif">${locker}</span><span>${desc}</span>${slot ? `<span class="font-bold">${slot}</span>` : ""}</div>`
+    : `<div class="rounded-xl border border-slate-200 bg-canvas px-4 py-3"><p class="font-bold">${i && i.status === "sold" ? "Sold" : "No locker assigned"}</p></div>`}</div>`;
+}
+
+/* ---------------- Reports ---------------- */
+let reportView = "onhand";
+function setReport(v) { reportView = v; renderReports(); }
+function table(headers, rows, total, groups) {
+  return `<div class="overflow-x-auto"><table class="table"><thead>
+    ${groups ? `<tr><th rowspan="2">${headers[0]}</th>${groups.map(([l, s]) => `<th colspan="${s}" class="border-l border-slate-200 text-center">${l}</th>`).join("")}</tr>` : ""}
+    <tr>${(groups ? headers.slice(1) : headers).map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>
+    ${rows.map((r) => `<tr>${r.map((c, n) => `<td class="${n === 0 ? "font-medium" : "whitespace-nowrap"}">${c}</td>`).join("")}</tr>`).join("")}
+    ${total ? `<tr class="bg-canvas font-bold">${total.map((c) => `<td class="whitespace-nowrap">${c}</td>`).join("")}</tr>` : ""}
+    </tbody></table></div>`;
+}
+function renderReports() {
+  document.querySelectorAll("[data-report]").forEach((t) => t.classList.toggle("active", t.dataset.report === reportView));
+  const kindSelect = `<label><span class="label">Report</span><select class="input"><option>All (shop stock, pawning, orders)</option><option>Shop stock</option><option>Pawning</option><option>Customer orders</option></select></label>`;
+  const section = (title, inner, count) => `<section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <h2 class="border-b border-slate-200 px-4 py-3 text-sm font-bold text-slate-800">${title}${count != null ? ` <span class="font-normal text-foreground/60">· ${count} items</span>` : ""}</h2>${inner}</section>`;
+  if (reportView === "onhand") {
+    document.getElementById("report-sub").textContent = "Everything that was in stock at the end of the chosen day, by category and item.";
+    const onHand = stock.filter((i) => i.status !== "sold");
+    const byCat = categories.map((c) => { const l = onHand.filter((i) => i.category === c.code); return l.length ? [`${c.name} (${c.code})`, l.length, g(l.reduce((s, i) => s + i.mg, 0)), rs(l.reduce((s, i) => s + priceOf(i), 0))] : null; }).filter(Boolean);
+    document.getElementById("report-body").innerHTML = `
+      <div class="card mb-5 flex flex-wrap items-end gap-3">
+        <label><span class="label">Stock at the end of</span><input type="date" class="input" value="2026-10-31" /></label>${kindSelect}
+        <button class="btn-primary">Show report</button>
+        <div class="flex flex-wrap gap-2"><button class="btn-outline sm-btn">Today</button><button class="btn-outline sm-btn ring-2 ring-gold">End of last month</button><button class="btn-outline sm-btn">End of this month</button></div>
+      </div>
+      <p class="mb-3 text-sm text-foreground/60">Stock at the end of 31 Oct 2026</p>
+      <div class="space-y-5">
+        ${section("Shop stock", table(["Category", "Qty", "Weight", "Value"], byCat, ["Total", onHand.length, g(onHand.reduce((s, i) => s + i.mg, 0)), rs(onHand.reduce((s, i) => s + priceOf(i), 0))]) +
+          `<details class="border-t border-slate-200"><summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-ink">Show all ${onHand.length} items</summary>
+          ${table(["Item no.", "Name", "Category", "Karat", "Weight", "Locker / location", "Price"], onHand.map((i) => [i.code, i.name, catName(i.category), i.karat + "K", g(i.mg), lockerLabel(i) ?? i.location, rs(priceOf(i))]))}</details>`, onHand.length)}
+        ${section("Pawning", table(["Category", "Qty", "Weight", "Loan amount"], [["Bangle (BAN)", 1, g(20000), rs(210000)], ["Necklace (NEC)", 1, g(12500), rs(150000)]], ["Total", 2, g(32500), rs(360000)]), 2)}
+        ${section("Customer orders", table(["Category", "Qty", "Weight"], [["Bangle (BAN)", 1, g(0)], ["Necklace (NEC)", 1, g(22000)], ["Ring (RIN)", 1, g(0)]], ["Total", 3, g(22000)]), 3)}
+      </div>`;
+  } else {
+    document.getElementById("report-sub").textContent = "Opening stock, items in and out, and closing stock in each category for the chosen dates.";
+    const groups = [["Opening stock", 2], ["Added", 2], ["Sold", 3], ["Closing stock", 3]];
+    const headers = ["Category", "Qty", "Weight", "Qty", "Weight", "Qty", "Weight", "Value", "Qty", "Weight", "Value"];
+    document.getElementById("report-body").innerHTML = `
+      <div class="card mb-5 flex flex-wrap items-end gap-3">
+        <label><span class="label">From</span><input type="date" class="input" value="2026-11-01" /></label>
+        <label><span class="label">To</span><input type="date" class="input" value="2026-11-09" /></label>${kindSelect}
+        <button class="btn-primary">Show report</button>
+      </div>
+      <p class="mb-3 text-sm text-foreground/60">1 Nov 2026 to 9 Nov 2026</p>
+      <div class="space-y-5">${section("Shop stock", table(headers, [
+        ["Anklet (ANK)", 1, g(18500), 0, g(0), 0, g(0), rs(0), 1, g(18500), rs(85000)],
+        ["Necklace (NEC)", 1, g(15000), 0, g(0), 1, g(15000), rs(72000), 0, g(0), rs(0)],
+        ["Ring (RIN)", 1, g(7000), 1, g(8000), 0, g(0), rs(0), 2, g(15000), rs(61620)],
+      ], ["Total", 3, g(40500), 1, g(8000), 1, g(15000), rs(72000), 3, g(33500), rs(146620)], groups))}</div>`;
+  }
+}
+
+/* ---------------- Start ---------------- */
+renderDashboard(); renderOrders(); renderPawning(); renderStock(); renderLockers(); renderReports();
+go("stock");
+</script>
+</body>
+</html>
